@@ -20,6 +20,8 @@ public class Student {
     private String name;
     private String studentId; // Unique identifier for a student
     private String imagePath;
+    private String email;
+    private String mobile;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<IssuedBook> issuedBooks = new ArrayList<>();
