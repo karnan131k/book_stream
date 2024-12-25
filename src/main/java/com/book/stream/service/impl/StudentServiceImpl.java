@@ -2,6 +2,7 @@ package com.book.stream.service.impl;
 
 import com.book.stream.dto.request.StudentRequestDTO;
 import com.book.stream.entity.Student;
+import com.book.stream.exception.ResourceNotFoundException;
 import com.book.stream.repo.StudentRepository;
 import com.book.stream.service.StudentService;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student updateStudent(Long id, StudentRequestDTO dto) {
         logger.debug("Updating Student with ID: {}", id);
-        Student student = repository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        Student student = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
         student.setName(dto.getName());
         student.setImagePath(dto.getImagePath());
         student.setStudentId(dto.getStudentId());
@@ -47,7 +48,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudent(Long id) {
         logger.debug("Deleting Student with ID: {}", id);
-        Student student = repository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        Student student = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
         repository.delete(student);
     }
 
@@ -60,7 +61,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudentById(Long id) {
         logger.debug("Fetching Student with ID: {}", id);
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
     }
 
 

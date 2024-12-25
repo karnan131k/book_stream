@@ -2,6 +2,7 @@ package com.book.stream.service.impl;
 
 import com.book.stream.dto.request.AuthorRequestDTO;
 import com.book.stream.entity.Author;
+import com.book.stream.exception.ResourceNotFoundException;
 import com.book.stream.repo.AuthorRepository;
 import com.book.stream.service.AuthorService;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author updateAuthor(Long id, AuthorRequestDTO dto) {
         logger.debug("Updating author with ID: {}", id);
-        Author author = repository.findById(id).orElseThrow(() -> new RuntimeException("Author not found"));
+        Author author = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
         author.setName(dto.getName());
         author.setImagePath(dto.getImagePath());
         return repository.save(author);
@@ -42,7 +43,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteAuthor(Long id) {
         logger.debug("Deleting author with ID: {}", id);
-        Author author = repository.findById(id).orElseThrow(() -> new RuntimeException("Author not found"));
+        Author author = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
         repository.delete(author);
     }
 
@@ -55,7 +56,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author getAuthorById(Long id) {
         logger.debug("Fetching author with ID: {}", id);
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Author not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
     }
 
 

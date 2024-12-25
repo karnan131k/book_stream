@@ -4,6 +4,7 @@ import com.book.stream.dto.request.BookRequestDTO;
 import com.book.stream.entity.Author;
 import com.book.stream.entity.Book;
 import com.book.stream.entity.Category;
+import com.book.stream.exception.ResourceNotFoundException;
 import com.book.stream.repo.AuthorRepository;
 import com.book.stream.repo.BookRepository;
 import com.book.stream.repo.CategoryRepository;
@@ -33,8 +34,8 @@ public class BookServiceImpl implements BookService {
     public Book createBook(BookRequestDTO dto) {
         logger.debug("Creating Book with data: {}", dto);
 
-        Author author = authorRepository.findById(dto.getAuthorId()).orElseThrow(() -> new RuntimeException("Author not found"));
-        Category category = categoryRepository.findById(dto.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found"));
+        Author author = authorRepository.findById(dto.getAuthorId()).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
+        Category category = categoryRepository.findById(dto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         Book book = Book.builder()
                 .title(dto.getTitle())
@@ -49,9 +50,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book updateBook(Long id, BookRequestDTO dto) {
         logger.debug("Updating Book with ID: {}", id);
-        Book book = repository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
-        Author author = authorRepository.findById(dto.getAuthorId()).orElseThrow(() -> new RuntimeException("Author not found"));
-        Category category = categoryRepository.findById(dto.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found"));
+        Book book = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+        Author author = authorRepository.findById(dto.getAuthorId()).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
+        Category category = categoryRepository.findById(dto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         book.setTitle(dto.getTitle());
         book.setImagePath(dto.getImagePath());
         book.setStockCount(dto.getStockCount());
@@ -64,7 +65,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(Long id) {
         logger.debug("Deleting Book with ID: {}", id);
-        Book book = repository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+        Book book = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
         repository.delete(book);
     }
 
@@ -77,7 +78,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getBookById(Long id) {
         logger.debug("Fetching Book with ID: {}", id);
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
     }
 
 

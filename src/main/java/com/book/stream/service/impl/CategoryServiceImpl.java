@@ -2,6 +2,7 @@ package com.book.stream.service.impl;
 
 import com.book.stream.dto.request.CategoryRequestDTO;
 import com.book.stream.entity.Category;
+import com.book.stream.exception.ResourceNotFoundException;
 import com.book.stream.repo.CategoryRepository;
 import com.book.stream.service.CategoryService;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category updateCategory(Long id, CategoryRequestDTO dto) {
         logger.debug("Updating Category with ID: {}", id);
-        Category category = repository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         category.setName(dto.getName());
         category.setImagePath(dto.getImagePath());
         return repository.save(category);
@@ -41,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long id) {
         logger.debug("Deleting Category with ID: {}", id);
-        Category category = repository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         repository.delete(category);
     }
 
@@ -54,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryById(Long id) {
         logger.debug("Fetching Category with ID: {}", id);
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
     }
 
 

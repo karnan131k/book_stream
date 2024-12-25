@@ -4,6 +4,7 @@ import com.book.stream.dto.request.IssuedBookRequestDTO;
 import com.book.stream.entity.Book;
 import com.book.stream.entity.IssuedBook;
 import com.book.stream.entity.Student;
+import com.book.stream.exception.ResourceNotFoundException;
 import com.book.stream.repo.BookRepository;
 import com.book.stream.repo.IssuedBookRepository;
 import com.book.stream.repo.StudentRepository;
@@ -33,8 +34,8 @@ public class IssuedBookServiceImpl implements IssuedBookService {
     public IssuedBook createIssuedBook(IssuedBookRequestDTO dto) {
 
         logger.debug("Creating IssuedBook with data: {}", dto);
-        Book book = bookRepository.findById(dto.getBookId()).orElseThrow(() -> new RuntimeException("Book not found"));
-        Student student = studentRepository.findById(dto.getStudentId()).orElseThrow(() -> new RuntimeException("Student not found"));
+        Book book = bookRepository.findById(dto.getBookId()).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+        Student student = studentRepository.findById(dto.getStudentId()).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
         IssuedBook issuedBook = IssuedBook.builder()
                 .count(dto.getCount())
                 .duration(dto.getDuration())
@@ -48,10 +49,10 @@ public class IssuedBookServiceImpl implements IssuedBookService {
     @Override
     public IssuedBook updateIssuedBook(Long id, IssuedBookRequestDTO dto) {
         logger.debug("Updating IssuedBook with ID: {}", id);
-        Book book = bookRepository.findById(dto.getBookId()).orElseThrow(() -> new RuntimeException("Book not found"));
-        Student student = studentRepository.findById(dto.getStudentId()).orElseThrow(() -> new RuntimeException("Student not found"));
+        Book book = bookRepository.findById(dto.getBookId()).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+        Student student = studentRepository.findById(dto.getStudentId()).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
 
-        IssuedBook issuedBook = repository.findById(id).orElseThrow(() -> new RuntimeException("IssuedBook not found"));
+        IssuedBook issuedBook = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("IssuedBook not found"));
         issuedBook.setCount(dto.getCount());
         issuedBook.setDuration(dto.getDuration());
         issuedBook.setIssueDate(dto.getIssueDate());
@@ -63,7 +64,7 @@ public class IssuedBookServiceImpl implements IssuedBookService {
     @Override
     public void deleteIssuedBook(Long id) {
         logger.debug("Deleting IssuedBook with ID: {}", id);
-        IssuedBook issuedBook = repository.findById(id).orElseThrow(() -> new RuntimeException("IssuedBook not found"));
+        IssuedBook issuedBook = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("IssuedBook not found"));
         repository.delete(issuedBook);
     }
 
@@ -76,7 +77,7 @@ public class IssuedBookServiceImpl implements IssuedBookService {
     @Override
     public IssuedBook getIssuedBookById(Long id) {
         logger.debug("Fetching IssuedBook with ID: {}", id);
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("IssuedBook not found"));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("IssuedBook not found"));
     }
 
 
