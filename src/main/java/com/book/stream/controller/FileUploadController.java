@@ -1,10 +1,12 @@
 package com.book.stream.controller;
 
+import com.book.stream.dto.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,34 +26,22 @@ import java.util.Random;
 public class FileUploadController {
 
     @PostMapping("/upload-image")
-    public ResponseEntity<String> uploadEmployeeImage(@RequestParam("folderName") String folderName, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ApiResponse<String>> uploadEmployeeImage(@RequestParam("folderName") String folderName, @RequestParam("file") MultipartFile file) throws IOException {
 
-        try {
-            String imagePath = saveImage(folderName,file);
-            return ResponseEntity.ok(imagePath);
-        } catch (Exception e) {
-            log.error("Error uploading image", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Image Upload Failed");
-        }
+        String imagePath = saveImage(folderName,file);
+        return ResponseEntity.ok(ApiResponse.success(imagePath));
     }
 
     @DeleteMapping("/remove-image")
-    public ResponseEntity<String> removeEmployeeImage(@RequestParam("folderName") String folderName, @RequestParam("imageName") String imageName) {
-        try {
-            String message = deleteEmployeeImage(folderName, imageName);
-            return ResponseEntity.ok(message);
-        } catch (Exception e) {
-            log.error("Error removing image ",e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("mage Removal Failed");
-        }
+    public ResponseEntity<ApiResponse<String>> removeEmployeeImage(@RequestParam("folderName") String folderName, @RequestParam("imageName") String imageName) throws IOException {
+        String message = deleteEmployeeImage(folderName, imageName);
+        return ResponseEntity.ok(ApiResponse.success(message));
     }
 
     @GetMapping("/images/{folderName}/{imageName}.png")
     public ResponseEntity<?> getEmployeeImage(@PathVariable String folderName, @PathVariable String imageName) {
         // Define the folder where images are stored outside the resources
-        String imageFolderPath = "uploads/images" + folderName; // This folder is outside resources
+        String imageFolderPath = "uploads/images/" + folderName; // This folder is outside resources
 
         // Construct the full path to the image
         Path imagePath = Paths.get(imageFolderPath, imageName + ".png");
@@ -68,6 +58,9 @@ public class FileUploadController {
         HttpHeaders headers = new HttpHeaders();
         headers.setCacheControl("no-store, no-cache, must-revalidate, proxy-revalidate");
         headers.setPragma("no-cache");
+
+        // Set content type as image/png
+        headers.setContentType(MediaType.IMAGE_PNG);
 
         // Return the image as part of the response
         return ResponseEntity.ok()
@@ -105,7 +98,7 @@ public class FileUploadController {
         Files.write(imagePath, file.getBytes());
 
         // Return the image URL
-        return "/images/" + folderName + imageFileName;
+        return "/images/" + folderName + "/" + imageFileName;
     }
 
     private String getFileExtension(String filename) {
