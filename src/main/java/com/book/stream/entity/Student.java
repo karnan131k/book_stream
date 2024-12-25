@@ -1,5 +1,6 @@
 package com.book.stream.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -26,5 +27,6 @@ public class Student {
     private String mobile;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<IssuedBook> issuedBooks = new ArrayList<>();
 }

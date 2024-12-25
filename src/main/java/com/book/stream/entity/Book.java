@@ -1,5 +1,6 @@
 package com.book.stream.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,5 +30,6 @@ public class Book {
     private Author author;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<IssuedBook> issuedBooks = new ArrayList<>();
 }
