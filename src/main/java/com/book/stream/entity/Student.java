@@ -1,6 +1,7 @@
 package com.book.stream.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Student {
     private String name;
     private String studentId; // Unique identifier for a student
     private String imagePath;
+    @Email
     private String email;
     private String mobile;
 
