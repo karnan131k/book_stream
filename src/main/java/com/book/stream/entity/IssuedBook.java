@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class IssuedBook {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int count; // Number of books issued
     private int duration; // Duration in days
