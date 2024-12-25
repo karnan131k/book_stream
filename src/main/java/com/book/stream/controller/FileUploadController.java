@@ -125,7 +125,7 @@ public class FileUploadController {
         List<String> imageExtensions = Arrays.asList("png", "jpg", "jpeg", "gif", "bmp");
 
         // Construct the directory path using platform-independent approach
-        String directory = "uploads" + File.separator + "images" + File.separator + "folderName";
+        String directory = "uploads" + File.separator + "images" + File.separator + folderName;
 
         // Check each image format
         for (String ext : imageExtensions) {
