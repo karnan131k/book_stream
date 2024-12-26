@@ -15,8 +15,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: karnan.learning@gmail.com
-    password: bydbtrpzluhpzjxr
+    username: karnan.learningjgjhgjhghg@gmail.com
+    password: bydbtrpzluhpzjxrjkgjhgkjh
     properties:
       mail:
         smtp:
@@ -29,6 +29,6 @@ spring:
 # App Properties
 bookStream:
   app:
-    jwtSecret: bezKoderSecretKey
+    jwtSecret: bezKoderSecretKeyhjghhj
     jwtExpirationMs: 3600000
     jwtRefreshExpirationMs: 86400000
