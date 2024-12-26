@@ -11,4 +11,6 @@ public interface StudentService {
     void deleteStudent(Long id);
     List<Student> getAllStudents();
     Student getStudentById(Long id);
+
+    String generateNextStudentId();
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -62,6 +63,31 @@ public class StudentServiceImpl implements StudentService {
     public Student getStudentById(Long id) {
         logger.debug("Fetching Student with ID: {}", id);
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
+    }
+
+    @Override
+    public String generateNextStudentId() {
+        // Fetch the last student ID in descending order
+        Optional<Student> lastStudent = repository.findTopByOrderByStudentIdDesc();
+
+        String nextStudentId;
+
+        if (lastStudent.isPresent()) {
+            // Extract the numeric part of the last student ID
+            String lastStudentId = lastStudent.get().getStudentId();
+            int lastIdNumber = Integer.parseInt(lastStudentId.substring(1)); // Skip the 'S'
+
+            // Increment the numeric part
+            int nextIdNumber = lastIdNumber + 1;
+
+            // Generate the next ID with leading zeros (e.g., S001, S002)
+            nextStudentId = String.format("S%03d", nextIdNumber);
+        } else {
+            // Start with S001 if no records exist
+            nextStudentId = "S001";
+        }
+
+        return nextStudentId;
     }
 
 

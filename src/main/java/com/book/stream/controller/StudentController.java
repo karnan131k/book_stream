@@ -7,6 +7,7 @@ import com.book.stream.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +51,12 @@ public class StudentController {
     public ResponseEntity<ApiResponse<Student>> getById(@PathVariable Long id) {
         logger.info("Request to fetch Student with ID: {}", id);
         return ResponseEntity.ok(ApiResponse.success(service.getStudentById(id)));
+    }
+
+    @GetMapping("/generateNextStudentId")
+    public ResponseEntity<ApiResponse<String>> generateNextStudentId() {
+        String id = service.generateNextStudentId();
+        return ResponseEntity.ok(ApiResponse.success(id));
     }
 
 }

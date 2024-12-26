@@ -20,6 +20,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(unique = true)
     private String studentId; // Unique identifier for a student
     private String imagePath;
     @Email
