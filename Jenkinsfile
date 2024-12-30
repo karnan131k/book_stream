@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    tools {
+        jdk 'JAVA17'
+        maven 'MAVEN38'
+    }
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('book-stream-docker-hub-credentials') // Jenkins Docker Hub credentials ID
         DOCKER_IMAGE = 'karnank230/book-stream-backend-app'
@@ -8,36 +12,44 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                echo 'Checking out the source code...'
                 git branch: 'main', url: 'https://github.com/karnan131k/book_stream.git'
             }
         }
         stage('Build and Test') {
             steps {
-                sh './mvnw clean package -DskipTests'
+                echo 'Building the project and running tests...'
+                bat './mvnw clean package -DskipTests'
             }
         }
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE}:${TAG} ."
+                echo 'Building Docker image...'
+                bat "docker build -t ${DOCKER_IMAGE}:${TAG} ."
             }
         }
         stage('Push Docker Image to Docker Hub') {
             steps {
+                echo 'Pushing Docker image to Docker Hub...'
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        sh "docker push ${DOCKER_IMAGE}:${TAG}"
+                        bat "docker push ${DOCKER_IMAGE}:${TAG}"
                     }
                 }
             }
         }
         stage('Run Docker Image Locally') {
             steps {
+                echo 'Running Docker container locally...'
                 script {
-                    // Stop and remove existing container if running
-                    sh "docker stop book-stream-backend-app || true && docker rm book-stream-backend-app || true"
+                    // Stop and remove the existing container if it's running
+                    bat """
+                    docker ps -q --filter "name=book-stream-backend-app" | findstr . && docker stop book-stream-backend-app || echo "No running container to stop"
+                    docker ps -a -q --filter "name=book-stream-backend-app" | findstr . && docker rm book-stream-backend-app || echo "No container to remove"
+                    """
 
                     // Run the new container
-                    sh "docker run -d --name book-stream-backend-app -p 8888:8888 ${DOCKER_IMAGE}:${TAG}"
+                    bat "docker run -d --name book-stream-backend-app -p 8888:8888 ${DOCKER_IMAGE}:${TAG}"
                 }
             }
         }
@@ -50,7 +62,10 @@ pipeline {
             echo 'Build or deployment failed.'
         }
         always {
-           node{ cleanWs()}
+            echo 'Cleaning up the workspace...'
+            node {
+                cleanWs()
+            }
         }
     }
 }
