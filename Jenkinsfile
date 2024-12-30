@@ -10,8 +10,8 @@ pipeline {
         VERSION = getVersion(GIT_BRANCH)
         DOCKER_IMAGE_NAME = getTagName(VERSION, BUILD_NUMBER)                                                   // Docker image name
         DOCKER_CONTAINER_NAME = 'book-stream-backend-app'                       // Docker container name
-        PORT = '8082'                                                           // Exposed port
-        HOST_PORT = '8082'
+        PORT = '8888'                                                           // Exposed port
+        HOST_PORT = '8888'
     }
     stages {
         stage('Build and Test') {
