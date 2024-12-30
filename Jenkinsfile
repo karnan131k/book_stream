@@ -63,9 +63,9 @@ pipeline {
         }
         always {
             echo 'Cleaning up the workspace...'
-            node {
+            
                 cleanWs()
-            }
+          
         }
     }
 }
