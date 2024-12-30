@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    tools {
-        jdk 'JAVA17'
-        maven 'MAVEN38'
-    }
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('book-stream-docker-hub-credentials') // Jenkins Docker Hub credentials ID
         DOCKER_IMAGE = 'karnank230/book-stream-backend-app'
