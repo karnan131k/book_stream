@@ -62,9 +62,7 @@ pipeline {
             echo 'Build or deployment failed.'
         }
         always {
-            echo 'Cleaning up the workspace...'
-            
-                cleanWs()
+            stage('Cleanup') { steps { echo 'Cleaning up the workspace...' cleanWs() } }
           
         }
     }
