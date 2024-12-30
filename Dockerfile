@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the application JAR file
-COPY target/book-stream-0.0.1-SNAPSHOT.jar app.jar
+COPY target/book_stream-0.0.1-SNAPSHOT.jar app.jar
 
 # Copy the 'uploads' directory with the images into the container
 COPY uploads /app/uploads
