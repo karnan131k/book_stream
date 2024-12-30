@@ -19,7 +19,7 @@ EXPOSE 8082
 # Set environment variables for database configuration
 ENV DB_HOST=host.docker.internal
 ENV DB_PORT=3306
-ENV DB_NAME=smart_staff
+ENV DB_NAME=book_stream
 ENV DB_USER=root
 ENV DB_PASSWORD=
 
