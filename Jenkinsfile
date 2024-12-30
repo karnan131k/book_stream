@@ -50,7 +50,7 @@ pipeline {
             echo 'Build or deployment failed.'
         }
         always {
-            cleanWs() // Clean workspace after build
+           node{ cleanWs()}
         }
     }
 }
